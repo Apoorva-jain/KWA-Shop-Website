@@ -7,6 +7,7 @@ import  dotenv from 'dotenv'
 import connectdb from './config/db.js'
 import colors from 'colors'
 import productRoutes from './routes/productRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 
 const app = express()
 
@@ -16,13 +17,14 @@ app.listen(port, () => {
   console.log(`Example app listening on ${process.env.NODE_ENV} mode on port ${port}`.yellow.bold)
 })
 connectdb()
+app.use(express.json())
 
 app.get('/', (req, res) => {
     // get data first 
     res.send(`get request called on PORT....: ${port}`)}
 )
 app.use('/api/products', productRoutes )
-
+app.use('/api/users', userRoutes)
 
 // app.get('/api/products', (req, res) => {
 //     res.json(products) }
