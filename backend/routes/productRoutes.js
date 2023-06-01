@@ -1,5 +1,6 @@
 import express from "express"
-import { getProducts,getProductById } from '../controllers/productControllers.js'
+import { getProducts,getProductById,deleteProduct,createProduct,updateProduct,createProductReview,getTopProducts} from '../controllers/productControllers.js'
+import { protect, admin } from '../middleware/authMiddleware.js'
 // import Product from '../models/productModel.js'
 // import asyncHandler from "express-async-handler"
 
@@ -9,7 +10,9 @@ const router = express.Router()
 // @route: GET api/product
 //@access: public
 
-router.route('/').get(getProducts)
+router.route('/').get(getProducts).post(protect, admin, createProduct)
+router.route('/:id/reviews').post(protect, createProductReview)
+router.get('/top', getTopProducts)
 
 // router.get('/', asyncHandler(async(req, res) => {
 //     const products= await Product.find({})
@@ -22,6 +25,8 @@ router.route('/').get(getProducts)
 router
   .route('/:id')
   .get(getProductById)
+  .delete(protect, admin, deleteProduct)
+  .put(protect, admin, updateProduct)
 
 // router.get('/:id', asyncHandler(async(req, res) => {
 //   const product=await Product.findById(req.params.id).catch(e => false);
